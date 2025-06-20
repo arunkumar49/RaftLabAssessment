@@ -8,9 +8,12 @@ namespace RaftLabAssessment.Consoles
 		public async static Task Main(string[] args)
 		{
 			Startup startup = new Startup();
+
+			// Fetch user details based on user id
 			Console.Write("Please enter if of an employee : ");
-			var id = Convert.ToInt32(Console.ReadLine());
-			
+			var input = Console.ReadLine();
+			var id = int.TryParse(input, out var value) ? value : 0;
+
 			var user = await startup.GetUserDetailsAsync(id);
 
 			var userData = user == null ?
@@ -19,6 +22,7 @@ namespace RaftLabAssessment.Consoles
 
 			Console.WriteLine(userData);
 
+			// Fetch list of all the users.
 			var usersList = await startup.GetAllUsersAsync();
 
 			var usersData = usersList?.Count == 0 ?
@@ -31,6 +35,7 @@ namespace RaftLabAssessment.Consoles
 			await startup.GetUserDetailsAsync(id);
 			await startup.GetAllUsersAsync();
 
+			// To prevent console closing quickly in release mode.
 			Console.WriteLine("Please press enter key to exit");
 			Console.ReadLine();
 		}

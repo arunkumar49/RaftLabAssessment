@@ -48,8 +48,8 @@ namespace RaftLab.Assessment.Services
     {
       try
       {
-         // Fetch user Id from appsettings file
-         if (id == null)
+         // Fetch user Id from appsettings file if id is not passed or passed value is 0 (Assuming 0 doesn't exist)
+         if (id == 0)
          {
             id = _config.GetValue<int>(configUserId);
          }
