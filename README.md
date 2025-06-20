@@ -23,5 +23,7 @@ Instructions to Download, Configure, and Run the Application
 4) Provide User Input at Runtime
 	a) When prompted, enter a user ID (numeric) to fetch specific user details.
 	b) If you leave the input blank, the application will fetch the value from appsettings.json.
+	
+5) Check the logs for responses or any errors in the output directory (logs folder).
 
-5) Execute Unit Tests (Optional)
+6) Execute Unit Tests (Optional)
