@@ -49,13 +49,16 @@ namespace RaftLab.Assessment.Implementation
         return services;
 
     }
-
+        /// <summary>
+        /// Add fault tolerance using polly
+        /// </summary>
+        /// <returns></returns>
 		static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
 		{
 			return HttpPolicyExtensions
 				.HandleTransientHttpError()
-				.OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-				.WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2,retryAttempt)));
+				.OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+				.WaitAndRetryAsync(1, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2,retryAttempt)));
 		}
 
 		#endregion

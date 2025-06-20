@@ -9,7 +9,7 @@ namespace RaftLab.Assessment.Interfaces
 {
   public interface IExternalUserService
   {
-    Task<User?> GetUserByIdAsync();
+    Task<User?> GetUserByIdAsync(int? id);
 
     Task<List<List<User>>?> GetAllUsersAsync();
   }

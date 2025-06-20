@@ -1,16 +1,38 @@
 ﻿using RaftLab.Assessment.Implementation;
+using System.Text.Json;
 
-namespace RaftLabAssessment.Console
+namespace RaftLabAssessment.Consoles
 {
-	internal class Program
+	public class Program
 	{
 		public async static Task Main(string[] args)
 		{
-			await Startup.GetUserDetailsAsync();
-			await Startup.GetAllUsersAsync();
+			Startup startup = new Startup();
+			Console.Write("Please enter if of an employee : ");
+			var id = Convert.ToInt32(Console.ReadLine());
+			
+			var user = await startup.GetUserDetailsAsync(id);
 
-			await Startup.GetUserDetailsAsync();
-			await Startup.GetAllUsersAsync();
+			var userData = user == null ?
+			"We're unable to load the requested data at the moment.\r\nIf this issue persists, please contact the development team for assistance." :
+			$"User details : \n First Name : {user.FirstName} \n Last Name : {user.LastName} \n Email : {user.Email} \n Avatar: {user.Avatar}";
+
+			Console.WriteLine(userData);
+
+			var usersList = await startup.GetAllUsersAsync();
+
+			var usersData = usersList?.Count == 0 ?
+			"\nWe're unable to load the requested data at the moment.\r\nIf this issue persists, please contact the development team for assistance.\n" :
+			$"\nUsers list : {JsonSerializer.Serialize(usersList)}\n";
+
+			Console.WriteLine(usersData);
+
+			// Called twice to check cache functionality
+			await startup.GetUserDetailsAsync(id);
+			await startup.GetAllUsersAsync();
+
+			Console.WriteLine("Please press enter key to exit");
+			Console.ReadLine();
 		}
 	}
 }

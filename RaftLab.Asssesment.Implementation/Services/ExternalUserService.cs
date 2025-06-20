@@ -44,17 +44,21 @@ namespace RaftLab.Assessment.Services
     /// 
     /// </summary>
     /// <returns></returns>
-    public async Task<User?> GetUserByIdAsync()
+    public async Task<User?> GetUserByIdAsync(int? id)
     {
       try
       {
          // Fetch user Id from appsettings file
-         int userId = _config.GetValue<int>(configUserId);
-         string endPoint = $"{_config.GetValue<string>(configUserApi)}{userId}";
+         if (id == null)
+         {
+            id = _config.GetValue<int>(configUserId);
+         }
+         
+         string endPoint = $"{_config.GetValue<string>(configUserApi)}{id}";
 
          UserResponse? user = await _httpUserResponseHelper.SendGetAsync(endPoint);
 
-         var getUserByIdlog = user == null ? $"Something went wrong while calling the API {endPoint} or did not find any user with the id {userId}" :
+         var getUserByIdlog = user == null ? $"Something went wrong while calling the API {endPoint} or did not find any user with the id {id}" :
                                              $"User details from API : {JsonSerializer.Serialize(user)}";
 
          _log.Info(getUserByIdlog);

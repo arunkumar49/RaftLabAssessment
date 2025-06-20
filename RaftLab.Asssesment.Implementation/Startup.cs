@@ -18,7 +18,7 @@ namespace RaftLab.Assessment.Implementation
 
 	 #region constructor
 
-		static Startup()
+		public Startup()
 		{
 			var host = Host.CreateDefaultBuilder()
 			  .ConfigureAppConfiguration((context, config) =>
@@ -38,37 +38,35 @@ namespace RaftLab.Assessment.Implementation
 
 		}
 
+
+		public Startup(IExternalUserService userService)
+		{
+			_externalUserService = userService;
+		}
+
 		#endregion
 
-	 #region public methods
+		#region public methods
 		/// <summary>
 		/// Get user details by id
 		/// </summary>
 		/// <returns></returns>
-		public static async Task GetUserDetailsAsync()
+		public async Task<User?> GetUserDetailsAsync(int id)
 		{
-			var user = await _externalUserService.GetUserByIdAsync();
-
-			var userData = user == null ?
-			"We're unable to load the requested data at the moment.\r\nIf this issue persists, please contact the development team for assistance." :
-			$"User details : \n First Name : {user.FirstName} \n Last Name : {user.LastName} \n Email : {user.Email} \n Avatar: {user.Avatar}";
-
-			Console.WriteLine(userData);
+			return await _externalUserService.GetUserByIdAsync(id);
 		}
 
 		/// <summary>
 		/// Fetch all the users
 		/// </summary>
 		/// <returns></returns>
-		public static async Task GetAllUsersAsync()
+		public async Task<List<List<User>>?> GetAllUsersAsync()
 		{
 			var usersList = await _externalUserService.GetAllUsersAsync();
 
-			var usersData = usersList.Count == 0 ?
-			"\nWe're unable to load the requested data at the moment.\r\nIf this issue persists, please contact the development team for assistance.\n" :
-			$"\nUsers list : {JsonSerializer.Serialize(usersList)}\n";
+			
 
-			Console.WriteLine(usersData);
+			return usersList;
 		}
 		#endregion
 
